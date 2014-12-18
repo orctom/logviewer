@@ -1,0 +1,14 @@
+doctype html
+html
+	include header
+	body
+		#container-fluid
+			nav.navbar.navbar-default.navbar-fixed-top(role="navigation" style="margin-bottom: 0")
+				include menu
+			block content
+			include footer
+		script(src='/js/jquery/jquery-1.11.0.min.js')
+		script(src='/js/bootstrap/bootstrap.min.js')
+		script(src='/js/jquery/jquery.color-2.1.2.min.js')
+		script(src='/js/logviewer/logviewer.js')
+		block scripts

@@ -1,0 +1,17 @@
+extends layout/layout
+
+block content
+	.panel.panel-default
+		.panel-heading Live Log
+		.panel-body
+			pre#container(style="min-height: 600px;")
+			.row
+				.col-lg-6
+					i.fa.fa-spinner.fa-spin
+				.col-lg-6.text-right
+					button#clearBtn.btn.btn-default.btn-sm
+						span.glyphicon.glyphicon-repeat
+						| &nbsp; Clear
+					button#reconnect.btn.btn-default.btn-sm
+						span.glyphicon.glyphicon-repeat
+						| &nbsp; Reconnect
