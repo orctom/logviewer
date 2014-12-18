@@ -1,3 +1,5 @@
+var activeTab = null;
+
 var socket = null;
 var serverURL = "ws://10.164.39.64:3232";
 var connect = function() {
@@ -28,11 +30,24 @@ var onError = function(e) {
     console.log("[ERROR]");
 };
 var onMessage = function(event) {
-    displayLog(event.data);
+    if (event.data) {
+        displayLog(event.data);
+    } else {
+        console.log(event);
+    }
 };
 
 var displayLog = function(data) {
-    $("#container").append(data);
+    var event = JSON.parse(data);
+    var server = event.server;
+    console.log("server: " + server);
+    var message = "<p class='highlight'>" + event.message + "</p>";
+    $("#container-" + server).append(message);
+    var scrollToBottom = $(document).scrollTop() + $( window ).height() == $(document).height();
+    if (scrollToBottom) {
+        $("html, body").animate({ scrollTop: $(document).height() }, 1000);
+    }
+    $('.highlight').yellowFade().removeClass('highlight');
 };
 
 var init = function() {
@@ -47,6 +62,8 @@ var init = function() {
 
     connect();
 
+
+
     $("#clearBtn").on("click", function() {
         $("#container").empty();
     });
@@ -60,3 +77,9 @@ $(function() {
     init();
 });
 
+(function($) {
+    $.fn.yellowFade = function() {
+        this.animate( { backgroundColor: '#ffffcc' }, 1 ).animate( { backgroundColor: '#F5F5F5' }, 5000 );
+        return this;
+    }
+})(jQuery);
