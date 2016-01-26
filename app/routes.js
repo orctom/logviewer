@@ -4,7 +4,7 @@ var dashboard = require('./dashboard');
 
 module.exports = function(app, logger) {
 
-    //=====================   home   =======================
-    app.get('/', dashboard.index);
+  //=====================   home   =======================
+  app.get('/', dashboard.index);
 
 };

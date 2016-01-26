@@ -3,46 +3,39 @@ var config = require('./config');
 var express = require('express');
 var path = require('path');
 var favicon = require('static-favicon');
+// var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
 
 var browserify = require('browserify-middleware');
-
-var app = express();
-
 var logger = require('./config/logger');
 
-// add moment to express
+var app = express();
+app.set('env', config.env);
+
 app.locals.moment = require('moment');
+app.set('views', path.join(__dirname, 'views'));
+app.set('view engine', 'jade');
+//app.use(favicon(path.join(__dirname, 'public', 'favicon.ico')));
+app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({
+  extended: false
+}));
+// app.use(cookieParser());
+app.use(express.static(path.join(__dirname, 'public')));
 
-// General Setup
-app.configure(function() {
-    app.set('port', process.env.PORT || config.port);
-    app.set('env', config.env);
-    app.set('views', path.join(__dirname, 'views'));
-    app.set('view engine', 'jade');
-
-    app.use(favicon());
-    app.use(bodyParser.json());
-    app.use(bodyParser.urlencoded());
-
-    //app.use('/js', browserify('./modules', {
-    //    transform: ['jadeify']
-    //}));
-
-    app.use(express.static(path.join(__dirname, 'public')));
-    app.use(app.router);
-});
+// routes
+require('./app/routes.js')(app, logger);
 
 /// error handlers
 require('./config/error-handler')(app);
 
-// routes
-require('./app/routes.js')(app, config, logger);
+// startup
+var http = require('http');
+var port = process.env.PORT || config.port;
+app.set('port', port);
 
-app.configure('development', function() {
-    app.use(express.errorHandler());
-});
+var server = http.createServer(app);
 
-app.listen(app.get('port'), function() {
-    console.log('Server listening on port ' + app.get('port'));
+server.listen(port, function() {
+  console.log('Server listening on port ' + app.get('port'));
 });
