@@ -23,9 +23,7 @@ module.exports = function(config, server) {
         });
       }).then(function(qOK) {
         var queue = qOK.queue;
-        ch.bindQueue(queue, exchangeName, '', {
-          'x-max-length': 20
-        });
+        ch.bindQueue(queue, exchangeName, '');
         return queue;
       }).then(function(queue) {
         ch.consume(queue, function(msg) {
