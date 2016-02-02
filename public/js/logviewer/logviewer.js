@@ -16,7 +16,6 @@ var displayLog = function(data) {
 };
 
 var init = function() {
-
   $("#clearBtn").on("click", function() {
     $("#container").empty();
   });
@@ -26,8 +25,18 @@ var init = function() {
   });
 };
 
+var initIO = function() {
+  console.log("initIO...");
+  var socket = io();
+  socket.on('log', function(msg) {
+    console.log("=====" + msg);
+    // displayLog(msg);
+  });
+};
+
 $(function() {
   init();
+  initIO();
 });
 
 (function($) {

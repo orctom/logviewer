@@ -35,7 +35,9 @@ var port = process.env.PORT || config.port;
 app.set('port', port);
 
 var server = http.createServer(app);
-
 server.listen(port, function() {
-  console.log('Server listening on port ' + app.get('port'));
+  console.log('Server listening on port ' + port);
 });
+
+// amqp & socket.io
+require('./app/middlewares/logserver.js')(config, server);
