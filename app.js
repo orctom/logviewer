@@ -22,6 +22,7 @@ app.use(bodyParser.urlencoded({
 }));
 // app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
+app.use('/bower', express.static(path.join(__dirname, 'bower_components')));
 
 // routes
 require('./app/routes.js')(app, logger);

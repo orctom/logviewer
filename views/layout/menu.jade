@@ -1,9 +1,13 @@
 .navbar-header
-	button(class="navbar-toggle" data-toggle="collapse" data-target=".sidebar-collapse")
-		span.iron-bar
-		span.iron-bar
-		span.iron-bar
-	a(class="navbar-brand" href="/") Log Viewer
+	a(class="navbar-brand" href="/")
+		img(src="/img/logo.png" style="margin-top: -7px; display: inline; margin-right: 5px;")
+		b Log Viewer
+
+	ul.nav.navbar-nav.sites
+		li.active
+			a(href="javascript:void(0);" data-site="www") WWW
+		li
+			a(href="javascript:void(0);" data-site="bsd") BSD
 
 form.navbar-form.navbar-right(role="search")
 	.form-group
