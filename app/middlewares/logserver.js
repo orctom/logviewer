@@ -7,9 +7,11 @@ module.exports = function(config, server) {
   var io = socketio(server);
   io.on('connection', (socket) => {
     console.log('on connection');
-    sendCachedLogs(io);
-    socket.on('clientId', function(msg) {
-      console.log("...server clientId...::" + msg + ":::::::");
+    socket.on('request', function(msg) {
+      console.dir(msg);
+      var clientId = msg.clientId;
+      var site = msg.site;
+      sendCachedLogs(io, site);
     });
   });
 
@@ -31,19 +33,20 @@ module.exports = function(config, server) {
         ch.bindQueue(queue, exchangeName, '');
         return queue;
       }).then(function(queue) {
-        io.on('clientId', function(msg) {
-          console.log("...server clientId...::" + msg + "::");
-        });
         ch.consume(queue, function(msg) {
+          var message = msg.content.toString().split(':');
+          var site = message[0];
+          var text = message[1];
           var data = {
-            'timestamp': Date.now(),
-            'data': msg.content.toString()
+            'site': site,
+            'data': text
           };
           logs.push(data);
+          io.sockets.emit(site, data);
+
           while (logs.length >= 20) {
             logs.shift();
           }
-          io.sockets.emit('log', data);
         }, {
           noAck: true
         });
@@ -52,8 +55,11 @@ module.exports = function(config, server) {
   });
 };
 
-var sendCachedLogs = function(io) {
+var sendCachedLogs = function(io, site) {
+  console.log('sendCachedLogs: ' + site);
   logs.forEach(function(item) {
-    io.sockets.emit("log", item);
+    if (item.site == site) {
+      io.sockets.emit(site, item);
+    }
   });
 };

@@ -25,44 +25,55 @@ var registerMenuEvents = function() {
     console.log("clicked on: " + site);
     activeSite = site;
 
+    loadLogContainer();
     restartTailLogs();
   });
 };
 
 var registerClearEvent = function() {
   $("#clearBtn").on("click", function() {
-    $("#container").empty();
+    $(".tab-pane.active > pre").empty();
   });
 };
 
 var startTailLogs = function() {
-  console.log("startTailLogs...");
   socket.on('connect', function() {
     var clientId = localStorage.getItem("clientId");
     if (null === clientId) {
       clientId = socket.id;
       localStorage.setItem("clientId", clientId);
     }
-    socket.emit('clientId', clientId);
+    socket.emit('request', {
+      'clientId': clientId,
+      'site': activeSite
+    });
   });
-  socket.on('log-' + activeSite, function(msg) {
-    console.dir(msg);
+  console.log('sub: ' + activeSite);
+  socket.on(activeSite, function(msg) {
+    console.log("received: " + msg.data);
     // displayLog(msg.data);
     var message = "<p class='highlight'>" + msg.data + "</p>";
-    $("#container-www01").append(message);
+    $(".tab-pane.active > pre").append(message);
   });
 };
 
 var restartTailLogs = function() {
   socket.disconnect();
   socket = io();
+  startTailLogs();
+};
 
-  startTailLogs(socket);
+var loadLogContainer = function() {
+  var $logContainer = $('.logContainer');
+  $logContainer.empty();
+  $logContainer.load('/' + activeSite, function() {
+    registerClearEvent();
+  });
 };
 
 $(function() {
   registerMenuEvents();
-  registerClearEvent();
+  loadLogContainer();
 
   socket = io();
   startTailLogs();

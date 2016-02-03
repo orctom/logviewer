@@ -6,5 +6,7 @@ module.exports = function(app, logger) {
 
   //=====================   home   =======================
   app.get('/', dashboard.index);
+  app.get('/www', dashboard.www);
+  app.get('/bsd', dashboard.bsd);
 
 };

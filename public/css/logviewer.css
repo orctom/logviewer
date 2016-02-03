@@ -2,6 +2,12 @@ body {
   padding-top: 51px;
 }
 
+#logo {
+	margin-top: -7px; 
+	display: inline; 
+	margin-right: 5px;
+}
+
 .panel-body {
   overflow-y: scroll;
 }

@@ -1,0 +1,53 @@
+ul#tabs.nav.nav-tabs(role="tablist")
+  li.active(role="presentation")
+    a(href="#bsd01", aria-controls="bsd01", role="tab", data-toggle="tab") bsd01
+  li(role="presentation")
+    a(href="#bsd02", aria-controls="bsd02", role="tab", data-toggle="tab") bsd02
+  li(role="presentation")
+    a(href="#bsd03", aria-controls="bsd03", role="tab", data-toggle="tab") bsd03
+  li(role="presentation")
+    a(href="#bsd04", aria-controls="bsd04", role="tab", data-toggle="tab") bsd04
+  li(role="presentation")
+    a(href="#bsd05", aria-controls="bsd05", role="tab", data-toggle="tab") bsd05
+  li(role="presentation")
+    a(href="#bsd06", aria-controls="bsd06", role="tab", data-toggle="tab") bsd06
+  li(role="presentation")
+    a(href="#bsd07", aria-controls="bsd07", role="tab", data-toggle="tab") bsd07
+  li(role="presentation")
+    a(href="#bsd08", aria-controls="bsd08", role="tab", data-toggle="tab") bsd08
+  li(role="presentation")
+    a(href="#bsd09", aria-controls="bsd09", role="tab", data-toggle="tab") bsd09
+  li(role="presentation")
+    a(href="#bsd10", aria-controls="bsd10", role="tab", data-toggle="tab") bsd10
+
+.panel.panel-default
+  .panel-body
+    .tab-content
+      .tab-pane.active#bsd01
+        pre#container-bsd01
+      .tab-pane#bsd02
+        pre#container-bsd02
+      .tab-pane#bsd03
+        pre#container-bsd03
+      .tab-pane#bsd04
+        pre#container-bsd04
+      .tab-pane#bsd05
+        pre#container-bsd05
+      .tab-pane#bsd06
+        pre#container-bsd06
+      .tab-pane#bsd07
+        pre#container-bsd07
+      .tab-pane#bsd08
+        pre#container-bsd08
+      .tab-pane#bsd09
+        pre#container-bsd09
+      .tab-pane#bsd10
+        pre#container-bsd10
+
+    .row
+      .col-lg-6
+        i.fa.fa-spinner.fa-spin
+      .col-lg-6.text-right
+        button#clearBtn.btn.btn-default.btn-sm
+          span.glyphicon.glyphicon-repeat
+          | &nbsp; Clear
