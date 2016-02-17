@@ -1,19 +1,35 @@
 var activeSite = 'www';
 var socket = null;
+var dirtyFlags = {
+  'www': false,
+  'bsd': false
+};
+
+var highlightPattern = /(.*\.)(\w+(?:Exception|Error))(.*)/g;
 
 var displayLog = function(data) {
-  var event = JSON.parse(data);
-  var server = event.server;
-  console.log("server: " + server);
-  var message = "<p class='highlight'>" + event.message + "</p>";
-  $("#container-" + server).append(message);
-  var scrollToBottom = $(document).scrollTop() + $(window).height() == $(document).height();
-  if (scrollToBottom) {
-    $("html, body").animate({
-      scrollTop: $(document).height()
-    }, 1000);
+  var server = data.server;
+  var message = "<p class='highlight'>" + data.message + "</p>";
+  var $pre = $("#container-" + server);
+
+  var isCurrentServerActive = $pre.parent().hasClass("active");
+  if (isCurrentServerActive) {
+    var $panelBody = $pre.parent().parent().parent();
+    var panelBodyScrollHeight = $panelBody.prop("scrollHeight");
+    var scrollToBottom = $panelBody.scrollTop() + $panelBody.parent().height() == panelBodyScrollHeight;
+    if (scrollToBottom) {
+      $panelBody.animate({
+        scrollTop: panelBodyScrollHeight
+      }, 1000);
+    }
   }
+
+  $pre.append(highlightException(message));
   $('.highlight').yellowFade().removeClass('highlight');
+};
+
+var highlightException = function(message) {
+  return message.replace(highlightPattern, "$1<span class='label label-primary'>$2</span>$3");
 };
 
 var registerMenuEvents = function() {
@@ -22,7 +38,6 @@ var registerMenuEvents = function() {
     $(".sites > li").removeClass('active');
     $site.parent().addClass('active');
     var site = $site.data('site');
-    console.log("clicked on: " + site);
     activeSite = site;
 
     loadLogContainer();
@@ -31,7 +46,7 @@ var registerMenuEvents = function() {
 };
 
 var registerClearEvent = function() {
-  $("#clearBtn").on("click", function() {
+  $("#clearBtn").on("click", function(e) {
     $(".tab-pane.active > pre").empty();
   });
 };
@@ -50,10 +65,8 @@ var startTailLogs = function() {
   });
   console.log('sub: ' + activeSite);
   socket.on(activeSite, function(msg) {
-    console.log("received: " + msg.data);
-    // displayLog(msg.data);
-    var message = "<p class='highlight'>" + msg.data + "</p>";
-    $(".tab-pane.active > pre").append(message);
+    displayLog(msg);
+    dirtyFlags[activeSite] = true;
   });
 };
 
@@ -65,10 +78,14 @@ var restartTailLogs = function() {
 
 var loadLogContainer = function() {
   var $logContainer = $('.logContainer');
-  $logContainer.empty();
   $logContainer.load('/' + activeSite, function() {
     registerClearEvent();
+    resizeLogPanel();
   });
+};
+
+var resizeLogPanel = function() {
+  $(".panel-body").css("height", $(window).height() - 138);
 };
 
 $(function() {
@@ -77,6 +94,8 @@ $(function() {
 
   socket = io();
   startTailLogs();
+
+  window.onresize = resizeLogPanel;
 });
 
 (function($) {

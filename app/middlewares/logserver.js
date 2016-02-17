@@ -34,17 +34,11 @@ module.exports = function(config, server) {
         return queue;
       }).then(function(queue) {
         ch.consume(queue, function(msg) {
-          var message = msg.content.toString().split(':');
-          var site = message[0];
-          var text = message[1];
-          var data = {
-            'site': site,
-            'data': text
-          };
+          var data = JSON.parse(msg.content.toString());
           logs.push(data);
-          io.sockets.emit(site, data);
+          io.sockets.emit(data.site, data);
 
-          while (logs.length >= 20) {
+          while (logs.length >= 50) {
             logs.shift();
           }
         }, {
