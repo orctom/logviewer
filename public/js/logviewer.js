@@ -26,6 +26,16 @@ var displayLog = function(data) {
 
   $pre.append(highlightException(message));
   $('.highlight').yellowFade().removeClass('highlight');
+  updateBadge(server);
+};
+
+var updateBadge = function(server) {
+  var $badge = $("#badge-" + server);
+  var count = Number($badge.text()) + 1;
+  $badge.html(count);
+  $badge.addClass("badge-highlight").delay(500).queue(function() {
+    $(this).removeClass('badge-highlight').dequeue();
+  });
 };
 
 var highlightException = function(message) {
@@ -48,6 +58,7 @@ var registerMenuEvents = function() {
 var registerClearEvent = function() {
   $("#clearBtn").on("click", function(e) {
     $(".tab-pane.active > pre").empty();
+    $("#badge-" + $(".tab-pane.active").prop("id")).html(0);
   });
 };
 

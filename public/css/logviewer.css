@@ -29,3 +29,10 @@ body {
 	padding-top: 35px;
 }
 
+.badge-info {
+  background-color: #3a87ad;
+}
+.badge-highlight {
+  background-color: #2d6987;
+  font-size: 120%;
+}
