@@ -2,6 +2,7 @@ var gulp = require('gulp'),
   gutil = require('gulp-util'),
   jshint = require('gulp-jshint'),
   size = require('gulp-filesize'),
+  imagemin = require('gulp-imagemin'),
   concat = require('gulp-concat'),
   uglify = require('gulp-uglify'),
   uglifycss = require('gulp-uglifycss'),
@@ -49,7 +50,8 @@ gulp.task('images', function() {
 
   gulp.src('./src/img/*.{jpg,png,gif}')
     .pipe(imagemin())
-    .pipe(gulp.dest('./public/img'));
+    .pipe(gulp.dest('./public/img'))
+    .pipe(size());
 });
 
 gulp.task('browser-sync', ['nodemon'], function() {
