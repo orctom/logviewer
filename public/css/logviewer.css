@@ -8,12 +8,17 @@ body {
 	margin-right: 5px;
 }
 
+.nav > li > a {
+  padding: 6px 10px;
+}
+
 .panel-body {
   overflow-y: scroll;
 }
 
 .tab-content pre {
   min-height: 465px;
+  white-space: pre-wrap;
 }
 
 .tab-content pre .label {
