@@ -6,7 +6,6 @@ var favicon = require('static-favicon');
 // var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
 
-var browserify = require('browserify-middleware');
 var logger = require('./config/logger');
 
 var app = express();

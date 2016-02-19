@@ -9,7 +9,7 @@
 		li
 			a(href="javascript:void(0);" data-site="bsd") BSD
 
-form.navbar-form.navbar-right(role="search")
+form.navbar-form.navbar-right(role="search", action="/search")
 	.form-group
-		input.form-control(type="text", placeholder="Not implemented yet...")
-		button.btn.btn-default(type="button") Search
+		input.form-control.search-control(type="text", name="q" placeholder="Search")
+		button.btn.btn-default(type="submit") Search

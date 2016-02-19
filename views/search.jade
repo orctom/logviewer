@@ -1,0 +1,48 @@
+extends layout/layout
+
+block content
+  .col-md-12
+    .row
+      .col-md-10.col-md-offset-1
+        form.form-inline(action="/search")
+          .form-group
+            select.form-control(name="site")
+              +site-option('www', 'WWW')
+              +site-option('bsd', 'BSD')
+          .form-group
+            input.form-control.search-control(type="text", name="q" placeholder="Search" value="#{q}")
+            button.btn.btn-default(type="submit") Search
+    .row
+      .col-md-12
+        h5 Query Results:
+
+        if hits
+          table.table.table-striped.table-bordered
+            thead
+              tr
+                th details
+                th timestamp
+                th location
+                th exception
+            tbody
+              each exception, i in hits.hits
+                tr
+                  td
+                    button.btn.btn-primary.btn-circle(data-target="" data-toggle="modal")
+                      i.fa.fa-list
+                  td= exception._source.timestamp
+                  td= exception._source.location
+                  td= exception._source.exception
+         else
+           .row
+             .col-md-8.col-md-offset-2
+               .alert.alert-info(role="alert") No records hit.
+
+block scripts
+  script(src='/js/search.js')
+
+mixin site-option(code, name)
+  if (site === code)
+    option(value=code, selected="selected") #{name}
+  else
+    option(value=code)= name

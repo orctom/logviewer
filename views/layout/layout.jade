@@ -1,15 +1,24 @@
 doctype html
 html
-	include header
-	body
-		#container-fluid
-			nav.navbar.navbar-default.navbar-fixed-top(role="navigation" style="margin-bottom: 0")
-				include menu
-			block content
-			include footer
-		script(src='/bower/jquery/dist/jquery.min.js')
-		script(src='/bower/bootstrap/dist/js/bootstrap.min.js')
-		script(src='/bower/jquery-color/jquery.color.js')
-		script(src='/socket.io/socket.io.js')
-		script(src='/js/logviewer.js')
-		block scripts
+  include header
+  body
+    #container-fluid
+      nav.navbar.navbar-default.navbar-fixed-top(role="navigation" style="margin-bottom: 0")
+        include menu
+      if info
+        .row
+          .col-md-8.col-md-offset-2
+            .alert.alert-info(role="alert")= info
+      if error
+        .row
+          .col-md-8.col-md-offset-2
+            .alert.alert-warning(role="alert")= error
+      .col-lg-12#content
+        block content
+      include footer
+    script(src='/bower/jquery/dist/jquery.min.js')
+    script(src='/bower/bootstrap/dist/js/bootstrap.min.js')
+    script(src='/bower/jquery-color/jquery.color.js')
+    script(src='/socket.io/socket.io.js')
+    script(src='/js/logviewer.js')
+    block scripts

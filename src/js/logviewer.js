@@ -88,7 +88,7 @@ var restartTailLogs = function() {
 };
 
 var loadLogContainer = function() {
-  var $logContainer = $('.logContainer');
+  var $logContainer = $('#content');
   $logContainer.load('/' + activeSite, function() {
     registerClearEvent();
     resizeLogPanel();
@@ -101,12 +101,6 @@ var resizeLogPanel = function() {
 
 $(function() {
   registerMenuEvents();
-  loadLogContainer();
-
-  socket = io();
-  startTailLogs();
-
-  window.onresize = resizeLogPanel;
 });
 
 (function($) {
