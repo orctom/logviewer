@@ -1,3 +1,6 @@
+@import "../../bower_components/bootstrap-sass/assets/stylesheets/_bootstrap.scss";
+@import "../../bower_components/font-awesome/scss/font-awesome.scss";
+
 body {
   padding-top: 51px;
 }
@@ -8,21 +11,26 @@ body {
 	margin-right: 5px;
 }
 
-.server-tabs > li > a {
-  padding: 6px 10px;
+.server-tabs {
+  > li {
+    > a {
+      padding: 6px 10px;
+    }
+  }
 }
 
 .panel-body {
   overflow-y: scroll;
 }
 
-.tab-content pre {
-  min-height: 465px;
-  white-space: pre-wrap;
-}
-
-.tab-content pre .label {
-  font-size: 100% !important;
+.tab-content {
+  pre {
+    min-height: 465px;
+    white-space: pre-wrap;
+    .label {
+      font-size: 100% !important;
+    }
+  }
 }
 
 .server-tabs {
