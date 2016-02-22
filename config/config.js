@@ -7,7 +7,7 @@ config.mq = {
 };
 
 config.es = {
-  host: 'localhost:9200',
+  host: '10.164.39.65:9200',
   log: 'info'
 };
 
