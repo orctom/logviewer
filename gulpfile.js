@@ -2,7 +2,6 @@ var gulp = require('gulp'),
   gutil = require('gulp-util'),
   jshint = require('gulp-jshint'),
   size = require('gulp-filesize'),
-  imagemin = require('gulp-imagemin'),
   concat = require('gulp-concat'),
   uglify = require('gulp-uglify'),
   uglifycss = require('gulp-uglifycss'),
@@ -14,7 +13,7 @@ var gulp = require('gulp'),
 var paths = {
   scripts: [
     'bower_components/jquery/dist/jquery.min.js',
-    'bower_components/bootstrap/dist/js/bootstrap.min.js',
+    'bower_components/bootstrap-sass/assets/javascripts/bootstrap.min.js',
     'bower_components/jquery-color/jquery.color.js',
     'bower_components/socket.io-client/socket.io.js',
     'src/js/logviewer.js'
@@ -89,9 +88,7 @@ gulp.task('asserts', function() {
     .pipe(gulp.dest('public/fonts'));
 
   gulp.src('src/img/*.{jpg,png,gif}')
-    .pipe(imagemin())
-    .pipe(gulp.dest('public/img'))
-    .pipe(size());
+    .pipe(gulp.dest('public/img'));
 });
 
 gulp.task('browser-sync', ['nodemon'], function() {
