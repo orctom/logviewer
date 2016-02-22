@@ -1,0 +1,14 @@
+public
+bower_components
+node_modules
+.git
+.gitignore
+
+config/config.js
+sender.js
+
+*.iml
+.idea
+.classpath
+.project
+.settings
