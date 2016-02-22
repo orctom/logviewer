@@ -42,10 +42,10 @@ body {
 	padding-top: 35px;
 }
 
+$badge-olor: #3a87ad;
 .badge-info {
-  background-color: #3a87ad;
+  background-color: $badge-olor;
 }
 .badge-highlight {
-  background-color: #2d6987;
-  font-size: 120%;
+  background-color: darken($badge-olor, 25%);
 }
