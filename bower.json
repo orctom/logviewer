@@ -24,6 +24,8 @@
     "font-awesome": "^4.5.0",
     "jquery": "^2.2.0",
     "jquery-color": "^2.1.2",
-    "socket.io-client": "^1.4.5"
+    "socket.io-client": "^1.4.5",
+    "bootstrap-daterangepicker": "^2.1.17",
+    "moment": "^2.11.2"
   }
 }

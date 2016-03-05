@@ -1,5 +1,6 @@
 @import "../../bower_components/bootstrap-sass/assets/stylesheets/_bootstrap.scss";
 @import "../../bower_components/font-awesome/scss/font-awesome.scss";
+@import "/bower/bootstrap-daterangepicker/daterangepicker.css";
 
 body {
   padding-top: 51px;
@@ -9,6 +10,12 @@ body {
 	margin-top: -7px; 
 	display: inline; 
 	margin-right: 5px;
+}
+
+@for $size from 0 through 6 {
+  .control-#{200 + $size*50} {
+    width: #{200 + $size*50}px !important;
+  }
 }
 
 .server-tabs {

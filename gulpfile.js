@@ -11,14 +11,18 @@ var gulp = require('gulp'),
   reload = browserSync.reload;
 
 var paths = {
-  scripts: [
+  mainjs: [
     'bower_components/jquery/dist/jquery.min.js',
     'bower_components/bootstrap-sass/assets/javascripts/bootstrap.min.js',
     'bower_components/jquery-color/jquery.color.js',
     'bower_components/socket.io-client/socket.io.js',
+    'bower_components/moment/moment.js',
+    'bower_components/bootstrap-daterangepicker/daterangepicker.js',
     'src/js/logviewer.js'
   ],
-  scss: ['src/scss/*.scss']
+  scripts: ['src/js/*.js'],
+  scss: ['src/scss/*.scss'],
+  images: ['src/img/*.{jpg,png,gif}']
 };
 
 gulp.task('lint', function() {
@@ -32,22 +36,22 @@ gulp.task('clean', function(cb) {
 });
 
 gulp.task('scripts:dev', function() {
-  gulp.src(paths.scripts)
+  gulp.src(paths.mainjs)
     .pipe(concat('main.js'))
     .pipe(gulp.dest('public/js'));
 
-  gulp.src('src/js/*.js')
+  gulp.src(paths.scripts)
     .pipe(gulp.dest('public/js'));
 });
 
 gulp.task('scripts:build', function(result) {
-  gulp.src(paths.scripts)
+  gulp.src(paths.mainjs)
     .pipe(concat('main.js'))
     .pipe(uglify())
     .pipe(gulp.dest('public/js'))
     .pipe(size());
 
-  gulp.src('src/js/*.js')
+  gulp.src(paths.scripts)
     .pipe(uglify())
     .pipe(gulp.dest('public/js'))
     .pipe(size());
@@ -57,8 +61,8 @@ gulp.task('sass:dev', function() {
   gulp.src(paths.scss)
     .pipe(sass())
     .pipe(gulp.dest('public/css'))
-    .pipe(reload({
-      stream: true
+    .pipe(browserSync.stream({
+      match: '**/*.css'
     }));
 });
 
@@ -75,38 +79,35 @@ gulp.task('sass:build', function() {
     .pipe(uglifycss({
       "max-line-len": 120
     }))
-    .pipe(gulp.dest('public/css'))
-    .pipe(reload({
-      stream: true
-    }));
+    .pipe(gulp.dest('public/css'));
 });
 
 gulp.task('asserts', function() {
   gulp.src('src/favicon.ico').pipe(gulp.dest('public'));
 
-  gulp.src('bower_components/bootstrap-sass/assets/fonts/**/*.*')
-    .pipe(gulp.dest('public/fonts'));
-
-  gulp.src('src/img/*.{jpg,png,gif}')
+  gulp.src(paths.images)
     .pipe(gulp.dest('public/img'));
 });
 
-gulp.task('browser-sync', ['nodemon'], function() {
-  browserSync.init(null, {
-    proxy: "http://localhost:5000",
-    files: ["public/**/*.*"],
-    browser: "google chrome",
-    port: 7000,
+gulp.task('bs', ['nodemon'], function() {
+  browserSync.init({
+    proxy: {
+      target: "http://localhost:3000",
+      ws: true
+    },
+    port: 5000
   });
+
+  gulp.watch(paths.scripts, ['scripts:dev'], browserSync.reload);
+  gulp.watch(paths.scss, ['sass:dev'], browserSync.reload);
+  gulp.watch(paths.images, ['asserts'], browserSync.reload);
+  gulp.watch("views/**/*.jade").on('change', browserSync.reload);
 });
 
-gulp.task('nodemon', function() {
+gulp.task('nodemon', ['scripts:dev', 'sass:dev', 'asserts'], function() {
   nodemon({
     script: 'app.js',
-    ext: 'js css',
-    env: {
-      'NODE_ENV': 'development'
-    }
+    ext: 'js css'
   }).on('restart', function() {
     console.log('restarted!')
   })
@@ -115,8 +116,9 @@ gulp.task('nodemon', function() {
 gulp.task('watch', function() {
   gulp.watch(paths.scripts, ['scripts:dev']);
   gulp.watch(paths.scss, ['sass:dev']);
+  gulp.watch(paths.images, ['asserts']);
 });
 
 gulp.task('build', ['lint', 'scripts:build', 'sass:build', 'asserts']);
 
-gulp.task('default', ['watch', 'scripts:dev', 'sass:dev', 'asserts', 'nodemon']);
+gulp.task('default', ['watch', 'nodemon']);
